@@ -1,19 +1,11 @@
-FW_DEVICE_IP = 192.168.1.4
 ARCHS = armv7 armv7s arm64
 
-include theos/makefiles/common.mk
+include $(THEOS)/makefiles/common.mk
 
-APPLICATION_NAME = quicklock46
-quicklock46_FILES = main.m quicklock46Application.mm RootViewController.mm
-quicklock46_FRAMEWORKS = UIKit CoreGraphics AudioToolbox
-quicklock46_CFLAGS = -fno-objc-arc
+APPLICATION_NAME = QuickLock
+$(APPLICATION_NAME)_LIBRARIES = rocketbootstrap
+$(APPLICATION_NAME)_FILES = main.m QLAppDelegate.mm RootViewController.mm
+$(APPLICATION_NAME)_FRAMEWORKS = UIKit CoreGraphics AudioToolbox
+$(APPLICATION_NAME)_PRIVATE_FRAMEWORKS = AppSupport
 
 include $(THEOS_MAKE_PATH)/application.mk
-
-ri:: remoteinstall
-remoteinstall:: all internal-remoteinstall after-remoteinstall
-internal-remoteinstall::
-	scp -P 22 "$(FW_PROJECT_DIR)/$(THEOS_OBJ_DIR_NAME)/$(APPLICATION_NAME).app/$(APPLICATION_NAME)" root@$(FW_DEVICE_IP):
-	ssh root@$(FW_DEVICE_IP) "mv $(APPLICATION_NAME) /Applications/$(APPLICATION_NAME).app/"
-after-remoteinstall::
-	ssh root@$(FW_DEVICE_IP) "killall -9 SpringBoard"

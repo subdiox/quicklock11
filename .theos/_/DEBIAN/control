@@ -1,0 +1,10 @@
+Package: com.subdiox.quicklock
+Name: QuickLock
+Depends: mobilesubstrate, firmware (>= 6.0), com.rpetrich.rocketbootstrap (>= 1.0.2) | firmware (<< 7.0)
+Architecture: iphoneos-arm
+Description: Just touch to lock your device, iOS 6 to 11 are supported. Thanks to deVbug's quicklock46
+Maintainer: subdiox <subdiox@gmail.com>
+Author: subdiox <subdiox@gmail.com>
+Section: Utilities
+Version: 1.0.0
+Installed-Size: 760

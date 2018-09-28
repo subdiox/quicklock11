@@ -1,17 +1,11 @@
-#import <AudioToolbox/AudioToolbox.h>
-#import "RootViewController.h"
+#import "QLAppDelegate.h"
+#import <rocketbootstrap/rocketbootstrap.h>
+#import <AppSupport/CPDistributedMessagingCenter.h>
 
-#import <unistd.h>
+@implementation QLAppDelegate
 
-@interface quicklock46Application: UIApplication <UIApplicationDelegate> {
-	UIWindow *_window;
-	RootViewController *_viewController;
-}
-@property (nonatomic, retain) UIWindow *window;
-@end
-
-@implementation quicklock46Application
 @synthesize window = _window;
+
 - (void)applicationDidFinishLaunching:(UIApplication *)application {
 	_window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 	_viewController = [[RootViewController alloc] init];
@@ -25,19 +19,18 @@
 		AudioServicesPlaySystemSound(1100);
 	}
 	
-	[self performSelector:@selector(exitMyself) withObject:nil afterDelay:1.0f];
+	CPDistributedMessagingCenter *center = [CPDistributedMessagingCenter centerNamed:@"com.subdiox.quicklockhelper.center"];
+	rocketbootstrap_distributedmessagingcenter_apply(center);
+	[center sendMessageName:@"SHOULDLOCKDEVICE" userInfo:nil];
+
+	[self performSelector:@selector(exitApplication) withObject:nil afterDelay:1.0f];
 }
 
-- (void)exitMyself {
+- (void)exitApplication {
 	int pid = getpid();
 	kill(pid, SIGKILL);
 }
 
-- (void)dealloc {
-	[_viewController release];
-	[_window release];
-	[super dealloc];
-}
 @end
 
 // vim:ft=objc
